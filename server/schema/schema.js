@@ -104,7 +104,7 @@ const UserType = new GraphQLObjectType({
 const HobbyType = new GraphQLObjectType({
   name: "Hobby",
   description: "Hobby Description",
-  fields: {
+  fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
@@ -114,13 +114,13 @@ const HobbyType = new GraphQLObjectType({
         return _.find(userData, { id: parent.user });
       },
     },
-  },
+  }),
 });
 
 const PostType = new GraphQLObjectType({
   name: "Post",
   description: "Post Description",
-  fields: {
+  fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     body: { type: GraphQLString },
@@ -130,7 +130,7 @@ const PostType = new GraphQLObjectType({
         return _.find(userData, { id: parent.user });
       },
     },
-  },
+  }),
 });
 
 //RootQuery
