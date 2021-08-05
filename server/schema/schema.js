@@ -8,6 +8,9 @@ const {
 } = require("graphql");
 
 var _ = require("lodash");
+var User = require("../model/user");
+var Hobby = require("../model/hobby");
+var Post = require("../model/post");
 
 var userData = [
   { id: "1", name: "Chris", age: 32, profession: "worker" },
