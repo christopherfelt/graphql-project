@@ -5,6 +5,7 @@ const {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
+  GraphQLNonNull,
 } = require("graphql");
 
 var _ = require("lodash");
@@ -19,7 +20,7 @@ const UserType = new GraphQLObjectType({
   description: "Documentation for user ...",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    name: { type: new GraphQLNonNull(GraphQLString) },
     age: { type: GraphQLInt },
     profession: { type: GraphQLString },
     posts: {
@@ -127,7 +128,7 @@ const Mutation = new GraphQLObjectType({
       type: UserType,
       args: {
         // id: {type: GraphQLID},
-        name: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
         age: { type: GraphQLInt },
         profession: { type: GraphQLString },
       },
