@@ -3,7 +3,7 @@ const MSchema = mongoose.Schema;
 
 const userSchema = new MSchema({
   name: String,
-  age: number,
+  age: Number,
   profession: String,
 });
 
