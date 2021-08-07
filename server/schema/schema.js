@@ -13,6 +13,7 @@ var mongoose = require("mongoose");
 var User = require("../model/user");
 var Hobby = require("../model/hobby");
 var Post = require("../model/post");
+const { findByIdAndUpdate } = require("../model/user");
 
 //Create types
 const UserType = new GraphQLObjectType({
@@ -144,6 +145,44 @@ const Mutation = new GraphQLObjectType({
         // return user;
       },
     },
+
+    updateUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: GraphQLInt },
+        profession: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return (updatedUser = User.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              name: args.name,
+              age: args.age,
+              profession: args.profession,
+            },
+          },
+          { new: true }
+        ));
+      },
+    },
+
+    removeUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        let removeUser = User.findByIdAndRemove(args.id).exec();
+        if (!removeUser) {
+          throw new Error("something wenth wrong");
+        }
+        return removeUser;
+      },
+    },
+
     createPost: {
       type: PostType,
       args: {
@@ -161,6 +200,39 @@ const Mutation = new GraphQLObjectType({
         return post;
       },
     },
+
+    updatePost: {
+      type: PostType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        title: { type: GraphQLString },
+        body: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return (updatedPost = Post.findByIdAndUpdate(
+          args.id,
+          {
+            $set: { title: args.title, body: args.body },
+          },
+          { new: true }
+        ));
+      },
+    },
+
+    removePost: {
+      type: PostType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        let removePost = Post.findByIdAndRemove(args.id).exec();
+        if (!removePost) {
+          throw new Error("something went wrong with deleting");
+        }
+        return removePost;
+      },
+    },
+
     createHobby: {
       type: HobbyType,
       args: {
@@ -177,6 +249,41 @@ const Mutation = new GraphQLObjectType({
         });
         hobby.save();
         return hobby;
+      },
+    },
+
+    updateHobby: {
+      type: HobbyType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        title: { type: GraphQLString },
+        description: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return (updateHobby = Hobby.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              title: args.title,
+              description: args.description,
+            },
+          },
+          { new: true }
+        ));
+      },
+    },
+
+    removeHobby: {
+      type: HobbyType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        let removeHobby = Hobby.findByIdAndRemove(args.id).exec();
+        if (!removeHobby) {
+          throw new Error("something went wrong with deleting");
+        }
+        return removeHobby;
       },
     },
   },
